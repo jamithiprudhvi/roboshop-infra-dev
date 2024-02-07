@@ -14,9 +14,6 @@ pipeline {
 
     // Build
     stages {
-        
-        
-        
         stage('APP ALB') {
             parallel {
                 stage('DB') {
