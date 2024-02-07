@@ -14,12 +14,37 @@ pipeline {
 
     // Build
     stages {
-        stage('vpc') {
+        
+        
+        
+        stage('APP ALB') {
+            parallel {
+                stage('DB') {
+                    steps {
+                       sh """
+                        cd 05-databases
+                        terraform init -reconfigure
+                        terraform destroy -auto-approve
+                      """
+                    }
+                }
+                stage('DB ALB') {
+                    steps {
+                       sh """
+                        cd 04-app-alb
+                        terraform init -reconfigure
+                        terraform destroy -auto-approve
+                      """
+                    }
+                }
+            }
+        }
+        stage('VPN') {
             steps {
                 sh """
-                    cd 01-vpc
+                    cd 03-vpn
                     terraform init -reconfigure
-                    terraform apply -auto-approve
+                    terraform destroy -auto-approve
                 """               
             }
         }
@@ -28,39 +53,17 @@ pipeline {
                 sh """
                     cd 02-sg
                     terraform init -reconfigure
-                    terraform apply -auto-approve
+                    terraform destroy -auto-approve
                 """               
             }
         }
-        stage('VPN') {
+        stage('vpc') {
             steps {
                 sh """
-                    cd 03-vpn
+                    cd 01-vpc
                     terraform init -reconfigure
-                    terraform apply -auto-approve
+                    terraform destroy -auto-approve
                 """               
-            }
-        }
-        stage('DB ALB') {
-            parallel {
-                stage('DB') {
-                    steps {
-                       sh """
-                        cd 04-databases
-                        terraform init -reconfigure
-                        terraform apply -auto-approve
-                      """
-                    }
-                }
-                stage('APP ALB') {
-                    steps {
-                       sh """
-                        cd 05-app-alb
-                        terraform init -reconfigure
-                        terraform apply -auto-approve
-                      """
-                    }
-                }
             }
         }
         
