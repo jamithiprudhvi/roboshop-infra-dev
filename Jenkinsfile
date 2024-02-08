@@ -19,7 +19,7 @@ pipeline {
                 sh """
                     cd 01-vpc
                     terraform init -reconfigure
-                    terraform destroy -auto-approve
+                    terraform apply -auto-approve
                 """               
             }
         }
