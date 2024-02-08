@@ -7,10 +7,10 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "prudhvi-state-prod"
+    bucket = "prudhvi-state-dev"
     key    = "sg"
     region = "us-east-1"
-    dynamodb_table = "prudhvi-locking-prod"
+    dynamodb_table = "prudhvi-locking-dev"
   }
 }
 
