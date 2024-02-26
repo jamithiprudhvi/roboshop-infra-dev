@@ -25,6 +25,7 @@ pipeline {
         stage('Apply') {
             steps {
                 sh """
+                    cd 01-vpc
                     terraform apply -auto-approve
                 """
             }
