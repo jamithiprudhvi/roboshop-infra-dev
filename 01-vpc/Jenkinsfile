@@ -16,8 +16,10 @@ pipeline {
         }
         stage('Plan') {
             steps {
-                "cd 01-vpc"
-                "terraform plan"
+                sh """
+                    "cd 01-vpc"
+                    "terraform plan"
+                """
             }
         }
         stage('Apply') {
