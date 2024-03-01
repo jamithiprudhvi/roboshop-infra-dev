@@ -44,7 +44,9 @@ pipeline {
         // }
         stage('Deploy') {
             when {
+                expression{
                     params.action == 'apply' 
+                }
             }
             input {
                 message "Should we continue?"
@@ -63,7 +65,9 @@ pipeline {
         }  
         stage('Destroy') {
             when {
+                expression{
                     params.action == 'destroy' 
+                }    
             }
             input {
                 message "Should we continue?"
