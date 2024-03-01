@@ -10,6 +10,10 @@ pipeline {
     disableConcurrentBuilds()
     ansiColor('xterm')
 
+    parameters {
+        choice(name: 'Action', choices: ['apply', 'destroy'], description: 'Pick something')
+    }
+
 }
     // Build
     stages {
@@ -17,7 +21,7 @@ pipeline {
             steps {
                 sh """
                     cd 01-vpc
-                    terraform  init -reconfigure
+                    terraform init -reconfigure
                 """    
             }
         }
@@ -29,14 +33,26 @@ pipeline {
                 """
             }
         }
-        stage('Apply') {
-            steps {
-                sh """
-                    cd 01-vpc
-                    terraform destroy -auto-approve
-                """
+        // stage('Apply') {
+        //     steps {
+        //         sh """
+        //             cd 01-vpc
+        //             terraform destroy -auto-approve
+        //         """
+        //     }
+        // }
+        stage('Deploy') {
+            when {
+                    "${params.action}" == 'apply' 
             }
-        }
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+                // submitter "alice,bob"
+                // parameters {
+                //     string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+                // }
+            }
     }
     // post Build
     post { 
