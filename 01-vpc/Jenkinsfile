@@ -61,7 +61,7 @@ pipeline {
                 """
             }
         }  
-        stage('Deploy') {
+        stage('Destroy') {
             when {
                     params.action == 'destroy' 
             }
